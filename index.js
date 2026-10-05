@@ -65,8 +65,13 @@ app.post('/paciente',async(req,res)=>{
     try {
            const [resultado] = await db.execute("INSERT INTO pacientes (nome, idade, altura, peso, imc, status) VALUES (?,?,?,?,?,?);", [nome,idade,altura,peso,imc,status]);
            res.status(201).json({
-               mensagem:"paciente cadastrado com sucesso.",
-               detalhes: resultado
+               id: resultado.insertId,
+               nome,
+               idade,
+               altura,
+               peso,
+               imc,
+               status
            });
     } catch (error) {
         res.status(500).json({
