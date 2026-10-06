@@ -84,3 +84,19 @@ app.post('/paciente',async(req,res)=>{
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
+
+app.get('/paciente/:id',async (req, res) => {
+    const {id}= req.params;
+ try {
+    const [rows]=await db.execute("SELECT * FROM pacientes WHERE id = ?",[id]);
+    if(rows.length===0){
+        return res.status(404).json("paciente não encontrado");
+    }
+    res.status(200).json(rows[0]);
+ } catch (error) {
+    res.status(500).json({
+        mensagem:"erro interno do servidor.",
+        detalhes: error.mensagem
+    });
+ }
+})
